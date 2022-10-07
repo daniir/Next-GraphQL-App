@@ -27,5 +27,5 @@ export class ProjectWithTasks
     description?: string;
 
     @Field(type => [Task])
-    tasks!: Task[];
+    tasks?: Task[];
 }
