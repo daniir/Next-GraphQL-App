@@ -5,6 +5,7 @@ import type { PageConfig } from 'next'
 import Cors from 'micro-cors';
 import createContext from '../../src/graphql/context';
 import { ProjectResolver } from '../../src/graphql/resolvers/projectResolvers';
+import { TaskResolver } from '../../src/graphql/resolvers/taskResolvers';
 
 const cors = Cors();
 
@@ -16,7 +17,7 @@ export const config: PageConfig = {
 
 const apolloServer = new ApolloServer({
     schema: await buildSchema({
-        resolvers: [ProjectResolver]
+        resolvers: [ProjectResolver, TaskResolver]
     }),
     //context: createContext,
     csrfPrevention: true,
