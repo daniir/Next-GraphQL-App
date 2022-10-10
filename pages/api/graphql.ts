@@ -19,7 +19,7 @@ const apolloServer = new ApolloServer({
     schema: await buildSchema({
         resolvers: [ProjectResolver, TaskResolver]
     }),
-    //context: createContext,
+    context: createContext,
     csrfPrevention: true,
 });
 
