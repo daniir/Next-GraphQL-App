@@ -10,22 +10,22 @@ export class Project
     @Field()
     name!: string;
 
-    @Field()
+    @Field({ nullable: true })
     description?: string;
 };
 
-@ObjectType()
-export class ProjectWithTasks
-{
-    @Field()
-    id!: string;
+// @ObjectType()
+// export class ProjectWithTasks
+// {
+//     @Field()
+//     id!: string;
 
-    @Field()
-    name!: string;
+//     @Field()
+//     name!: string;
 
-    @Field()
-    description?: string;
+//     @Field()
+//     description?: string;
 
-    @Field(type => [Task])
-    tasks?: Task[];
-}
+//     @Field(type => [Task])
+//     tasks?: Task[];
+// }
