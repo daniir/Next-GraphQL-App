@@ -1,42 +1,97 @@
-import { Resolver, Query, Mutation, Arg } from 'type-graphql';
-import { TaskService } from '../../services/taskService';
+import { Resolver, Query, Mutation, Arg, Ctx } from 'type-graphql';
+import type { Context } from '../context';
 import { Task } from '../entities/taskEntity';
-import { TaskInput } from '../inputs/taskInputs';
 
 @Resolver()
 export class TaskResolver
 {
-    constructor(
-        private readonly taskService = new TaskService()
-    ){};
 
-    @Query(() => [Task])
-    getTasks(){
-        return this.taskService.getTask();
-    }
+    @Query(() => Task)
+    async getTask(
+        @Arg('id') id: string,
+        @Ctx() ctx: Context,
+    ){
+        try {
+            const task = await ctx.prisma.tasks.findFirst({ where: { id } });
+            if(!task) throw new Error(`Task with id: ${id} not found`);
+            return task;
+        } catch (error) {
+            console.error(`Query getOne task Error: ${error}`);
+        };
+    };
 
     @Mutation(() => Task)
-    createTask(
-        @Arg('payload') payload: TaskInput
-    ): Task{
-        const task = this.taskService.addTask(payload);
-        return task;
+    async createTask(
+        @Arg('projectId') projectId: string,
+        @Arg('name') name: string,
+        @Ctx() ctx: Context
+    ){
+        try {
+            const task = await ctx.prisma.tasks.create({
+                data: {
+                    name,
+                    projectId
+                },
+            });
+            return task;
+        } catch (error) {
+            console.error(`Error creating task error: ${error}`);
+        };
     };
 
-    @Mutation(() => String)
-    updateTask(
+    @Mutation(() => Task)
+    async updateTaskName(
         @Arg('id') id: string,
         @Arg('name') name: string,
-    ): String{
-        const response = this.taskService.updateTask(id, name);
-        return response;
+        @Ctx() ctx: Context 
+    ){
+        try {
+            const task = await this.getTask(id, ctx);
+            if(task){
+                const taskName = await ctx.prisma.tasks.update({
+                    where: { id },
+                    data: { name },
+                });
+                return taskName;
+            };
+        } catch (error) {
+            console.error(`Mutation taskName updated Error: ${error}`);
+        };
+    };
+
+    @Mutation(() => Boolean)
+    async updateTaskStatus(
+        @Arg('id') id: string,
+        @Arg('status') status: boolean,
+        @Ctx() ctx: Context,
+    ){
+        try {
+            const task = await this.getTask(id, ctx);
+            if(task){
+                const statusTask = await ctx.prisma.tasks.update({
+                    where: { id },
+                    data: { status },
+                });
+                return statusTask.status;
+            };
+        } catch (error) {
+            console.error(`Mutation taskstatus deleted Error: ${error}`);
+        };
     };
 
     @Mutation(() => String)
-    deleteTask(
+    async deleteTask(
         @Arg('id') id: string,
-    ): String{
-        const response = this.taskService.deleteTask(id);
-        return response;
-    }
+        @Ctx() ctx: Context,
+    ){
+        try {
+            const task = await this.getTask(id, ctx);
+            if(task){
+                await ctx.prisma.tasks.delete({ where: { id } });
+                return `Task with id: ${id} has been deleted`;
+            };
+        } catch (error) {
+            console.error(`Mutation task deleted Error: ${error}`);
+        }
+    };
 };
