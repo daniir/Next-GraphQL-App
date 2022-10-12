@@ -16,4 +16,15 @@ model Projects {
   description String?
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  tasks Tasks[]
+}
+
+model Tasks {
+  id String @id @default(uuid())
+  name String
+  status Boolean @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  projectId String
+  project Projects @relation(fields: [projectId], references: [id], onDelete: Cascade)
 }
