@@ -14,18 +14,18 @@ export class Project
     description?: string;
 };
 
-// @ObjectType()
-// export class ProjectWithTasks
-// {
-//     @Field()
-//     id!: string;
+@ObjectType()
+export class ProjectWithTasks
+{
+    @Field()
+    id!: string;
 
-//     @Field()
-//     name!: string;
+    @Field()
+    name!: string;
 
-//     @Field()
-//     description?: string;
+    @Field({ nullable: true })
+    description?: string;
 
-//     @Field(type => [Task])
-//     tasks?: Task[];
-// }
+    @Field(type => [Task], { nullable: true })
+    tasks?: Task[];
+}
