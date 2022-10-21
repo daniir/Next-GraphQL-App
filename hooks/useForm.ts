@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import { useMutation } from '@apollo/client';
+import { CREATE_PROJECT } from '../src/graphql/queries/mutation';
 
 type initialForm = {
     name: string,
@@ -9,6 +11,7 @@ export const useForm = (
     initialForm: initialForm
 ) => {
     const [form, setForm] = useState<initialForm>(initialForm);
+    const [CreateProject, { loading, error }] = useMutation(CREATE_PROJECT);
 
     const handlerChange = (e: React.ChangeEvent< HTMLInputElement | HTMLTextAreaElement>) => {
         const { name, value } = e.target;
@@ -18,9 +21,16 @@ export const useForm = (
         });
     };
 
-    const handlerSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    const handlerSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        console.log(form)
+        try {
+            console.log(form);
+            await CreateProject({
+                variables: form
+            })
+        } catch (error) {
+            console.error(error);
+        }
     };
 
     return {
