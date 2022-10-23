@@ -1,7 +1,7 @@
 import 'reflect-metadata';
 import { ApolloServer } from 'apollo-server-micro';
 import { buildSchema } from 'type-graphql';
-import type { PageConfig } from 'next';
+import type { NextApiRequest, NextApiResponse, PageConfig } from 'next';
 import Cors from 'micro-cors';
 import createContext from '../../src/graphql/context';
 import { ProjectResolver } from '../../src/graphql/resolvers/projectResolvers';
@@ -26,7 +26,9 @@ export default cors(async function handler(req, res) {
   }
 
   await startServer;
-  await apolloServer.createHandler({ path: '/api/graphql' })(req, res);
+  await apolloServer.createHandler({ 
+    path: '/api/graphql' 
+  })(req, res);
 });
 
 export const config: PageConfig = {
