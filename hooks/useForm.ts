@@ -11,7 +11,8 @@ export const useForm = (
     initialForm: initialForm
 ) => {
     const [form, setForm] = useState<initialForm>(initialForm);
-    const [CreateProject, { loading, error }] = useMutation(CREATE_PROJECT);
+    const [errorMsg, setErrorMsg] = useState<String>("");
+    const [handlerProject, { loading, error }] = useMutation(CREATE_PROJECT);
 
     const handlerChange = (e: React.ChangeEvent< HTMLInputElement | HTMLTextAreaElement>) => {
         const { name, value } = e.target;
@@ -23,18 +24,36 @@ export const useForm = (
 
     const handlerSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
+        if(!form.name.trim()){
+            setErrorMsg('Name required');
+            return;
+        };
+
         try {
-            console.log(form);
-            await CreateProject({
-                variables: form
-            })
+            await handlerProject({
+                variables: {
+                    payload: form
+                }
+            });
+    
+            handlerReset();
         } catch (error) {
-            console.error(error);
+            console.log(`handlerSubmit Error: ${error}`)
         }
+    };
+
+    const handlerReset = () => {
+        setForm({
+            name: '',
+            description: '',
+        });
+        setErrorMsg('');
     };
 
     return {
         form,
+        errorMsg,
+        loading,
         handlerChange,
         handlerSubmit
     };
