@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useMutation } from '@apollo/client';
-import { CREATE_PROJECT } from '../src/graphql/queries/mutation';
+import { CREATE_PROJECT } from '../src/graphql/data/mutation';
 
 type initialForm = {
     name: string,
