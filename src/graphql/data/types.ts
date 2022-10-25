@@ -30,12 +30,3 @@ export type goToProps = {
     path: string,
     name: string,
 }
-
-export type ContextProps = {
-    isEdit: {
-        id: string,
-        name: string,
-        description?: string,
-    },
-    setIsEdit: (p: ProjectProp) => void
-}
