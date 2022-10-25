@@ -2,15 +2,16 @@ import React, { useState } from 'react';
 import { useMutation } from '@apollo/client';
 import { CREATE_PROJECT } from '../src/graphql/data/mutation';
 
-type initialForm = {
+type initialData = {
+    id?: string,
     name: string,
     description?: string,
 };
 
 export const useForm = (
-    initialForm: initialForm
+    initialForm: initialData
 ) => {
-    const [form, setForm] = useState<initialForm>(initialForm);
+    const [form, setForm] = useState<initialData>(initialForm);
     const [errorMsg, setErrorMsg] = useState<String>("");
     const [handlerProject, { loading, error }] = useMutation(CREATE_PROJECT);
 
