@@ -1,6 +1,6 @@
 import GoTo from '../components/GoTo';
 import Project from '../components/Project';
-import { GET_PORJECTS } from '../src/graphql/data/query';
+import { GET_PROJECTS } from '../src/graphql/data/query';
 import { ServerSideIndex } from '../src/graphql/data/types';
 import { client } from '../src/lib/apollo';
 
@@ -34,7 +34,7 @@ export default function Index({ projects, loading }: ServerSideIndex) {
 
 export async function getServerSideProps() {
   const { data, loading } = await client.query({
-    query: GET_PORJECTS
+    query: GET_PROJECTS
   });
 
   return {
