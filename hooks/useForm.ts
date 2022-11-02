@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useMutation } from '@apollo/client';
 import { CREATE_PROJECT } from '../src/graphql/data/mutation';
+import { GET_PROJECTS } from '../src/graphql/data/query';
 
 type initialData = {
     id?: string,
@@ -34,7 +35,18 @@ export const useForm = (
             await handlerProject({
                 variables: {
                     payload: form
-                }
+                },
+                update(cache, { data }){
+                  const { getProjects }: any = cache.readQuery({
+                    query: GET_PROJECTS,
+                  });
+                  cache.writeQuery({
+                    query: GET_PROJECTS,
+                    data: {
+                      getProjects: [data.createProject, ...getProjects],
+                    },
+                  });
+                },
             });
     
             handlerReset();
