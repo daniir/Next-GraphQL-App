@@ -1,16 +1,28 @@
 import Link from "next/link";
 import { ProjectProp } from "../src/graphql/data/types";
 import { useMutation } from '@apollo/client';
+import { ProjectObject } from '../src/graphql/data/types';
 import { DELETE_PROJECT } from "../src/graphql/data/mutation";
+import { GET_PROJECTS } from "../src/graphql/data/query";
 
 export default function Card({ project }: ProjectProp) {
-  const [deleteProject] = useMutation(DELETE_PROJECT);
+  const [deleteProject, { loading }] = useMutation(DELETE_PROJECT);
 
   const removeProject = async (id: string) => {
     await deleteProject({
-      variables: {
-        id,
-      },
+      variables: { id },
+      update(cache){
+        const { getProjects }: any = cache.readQuery({
+          query: GET_PROJECTS
+        });
+        cache.writeQuery({
+          query: GET_PROJECTS,
+          data: {
+            getProjects: getProjects.filter(
+              (p: ProjectObject) => p.id !== id)
+          }
+        })
+      }
     });
   };
 
@@ -21,24 +33,19 @@ export default function Card({ project }: ProjectProp) {
         <p className="card-text">{project.description}</p>
         <Link href={`/project/${project.id}`}>
           <a style={{ textDecoration: "none" }}>
-            Manage project
+            Go to project
             <i className="mx-2 bi bi-arrow-right-circle"></i>
           </a>
         </Link>
       </div>
       <div className="card-footer">
         <div className="d-grid gap-2 d-md-flex justify-content-md-end">
-          <Link href={`/project/edit/${project.id}`}>
-            <button
-              className="btn btn-warning btn-sm"
-            >
-              <i className="bi bi-pencil-fill"></i>
-            </button>
-          </Link>
           <button
             className="btn btn-danger btn-sm"
+            disabled={loading}
             onClick={() => removeProject(project.id)}
           >
+            Delete project
             <i className="bi bi-trash2-fill"></i>
           </button>
         </div>
