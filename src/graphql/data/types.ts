@@ -1,29 +1,43 @@
-import { Dispatch, SetStateAction } from "react";
-
-export type ServerSideIndex = {
-    projects: [
-        {
-            id: string,
-            name: string,
-            description?: string,
-            // tasks?:[
-            //     {
-            //         id: string,
-            //         name: string,
-            //         description: string
-            //     }
-            // ]
-        },
-    ],
-    loading: boolean,
-};
-
-export type ProjectProp = {
-    project: {
+export type ProjectList = [
+    {
         id: string,
         name: string,
         description?: string,
+        // tasks?:[
+        //     {
+        //         id: string,
+        //         name: string,
+        //         description: string
+        //     }
+        // ]
+    },
+];
+
+export type PorjectWithTasks = {
+  id: string;
+  name: string;
+  description?: string;
+  tasks?: [
+    {
+      id: string;
+      name: string;
+      description: string;
     }
+  ];
+};
+
+export type ProjectObject = {
+    id: string;
+    name: string;
+    description?: string;
+}
+
+export type ProjectProp = {
+  project: {
+    id: string;
+    name: string;
+    description?: string;
+  };
 };
 
 export type goToProps = {
