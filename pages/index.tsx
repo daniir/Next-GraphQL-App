@@ -1,12 +1,16 @@
+import { useQuery } from '@apollo/client';
 import GoTo from '../components/GoTo';
 import Project from '../components/Project';
 import { GET_PROJECTS } from '../src/graphql/data/query';
-import { ServerSideIndex } from '../src/graphql/data/types';
-import { client } from '../src/lib/apollo';
+import { ProjectList, ProjectObject } from '../src/graphql/data/types';
 
-export default function Index({ projects, loading }: ServerSideIndex) {
+export default function Index() {
+
+  const { data, loading } = useQuery(GET_PROJECTS)
 
   if(loading) return <p>..loading...</p>
+
+  const projects: ProjectList = data.getProjects;
 
   return(
     <div className="text-center mt-2">
@@ -17,7 +21,7 @@ export default function Index({ projects, loading }: ServerSideIndex) {
         {
           projects.length > 0 ? (
             projects.map(
-              project => (
+              (project: ProjectObject) => (
                 <div className="col" key={project.id}>
                 <Project project={project}/>
               </div>
@@ -30,17 +34,4 @@ export default function Index({ projects, loading }: ServerSideIndex) {
       </div>
     </div>
   )
-};
-
-export async function getServerSideProps() {
-  const { data, loading } = await client.query({
-    query: GET_PROJECTS
-  });
-
-  return {
-    props: {
-      projects: data.getProjects,
-      loading
-    }
-  }
 };
