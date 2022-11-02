@@ -1,27 +1,27 @@
 import React, { useState, useEffect } from 'react';
 import { useForm } from '../hooks/useForm';
 
-type initialData = {
+type DataFormType = {
   id?: string,
   name: string,
   description?: string,
 };
 
-const projectForm = {
-  name: '',
-  description: '',
-};
+const initialFormData = {
+  name: "",
+  description: ""
+}
 
-export default function ProjectForm(){
+export default function ProjectForm({ dataToEdit }: any){
 
-  const [data, setData] = useState<initialData>(projectForm);
+  const [data, setData] = useState<DataFormType>(initialFormData);
 
   const { form, errorMsg, loading, handlerChange, handlerSubmit } =
     useForm(data);
 
   return loading ? (
     <div>
-      <p>...loading...</p>
+      <p>...Loading project data...</p>
     </div>
   ) : (
     <form onSubmit={handlerSubmit}>
