@@ -2,22 +2,17 @@ import React, { useState, useEffect } from 'react';
 import { useForm } from '../hooks/useForm';
 
 type DataFormType = {
-  id?: string,
-  name: string,
-  description?: string,
+  formData: {
+    id?: string,
+    name: string,
+    description?: string,
+  }
 };
 
-const initialFormData = {
-  name: "",
-  description: ""
-}
-
-export default function ProjectForm({ dataToEdit }: any){
-
-  const [data, setData] = useState<DataFormType>(initialFormData);
+export default function ProjectForm({ formData }: DataFormType){
 
   const { form, errorMsg, loading, handlerChange, handlerSubmit } =
-    useForm(data);
+    useForm(formData);
 
   return loading ? (
     <div>
@@ -58,7 +53,7 @@ export default function ProjectForm({ dataToEdit }: any){
         </div>
         <div>
           <button type="submit" className="btn btn-primary">
-            Create
+            { form.id ? "Update" : "Create" }
           </button>
         </div>
       </div>

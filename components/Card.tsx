@@ -40,13 +40,19 @@ export default function Card({ project }: ProjectProp) {
       </div>
       <div className="card-footer">
         <div className="d-grid gap-2 d-md-flex justify-content-md-end">
+          <Link href={`/project/edit/${project.id}`}>
+            <a className="btn btn-warning btn-sm text-white">
+              Edit
+              <i className="bi bi-pencil mx-1"></i>
+            </a>
+          </Link>
           <button
             className="btn btn-danger btn-sm"
             disabled={loading}
             onClick={() => removeProject(project.id)}
           >
-            Delete project
-            <i className="bi bi-trash2-fill"></i>
+            Delete
+            <i className="bi bi-trash2-fill mx-1"></i>
           </button>
         </div>
       </div>
