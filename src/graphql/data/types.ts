@@ -13,6 +13,11 @@ export type ProjectList = [
     },
 ];
 
+export type ServerSideIndex = {
+  project: ProjectObject,
+  loading: boolean
+};
+
 export type PorjectWithTasks = {
   id: string;
   name: string;
@@ -30,7 +35,7 @@ export type ProjectObject = {
     id: string;
     name: string;
     description?: string;
-}
+};
 
 export type ProjectProp = {
   project: {
@@ -43,4 +48,4 @@ export type ProjectProp = {
 export type goToProps = {
     path: string,
     name: string,
-}
+};
