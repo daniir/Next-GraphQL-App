@@ -27,6 +27,22 @@ export class ProjectResolver
         try {
             const project = await ctx.prisma.projects.findFirst({
                 where: { id },
+            });
+            if(!project) throw new Error(`Project with id: ${id} not found`);
+            return project;
+        } catch (error) {
+            console.error(`Query getOne project Error: ${error}`);
+        };
+    };
+
+    @Query(() => ProjectWithTasks)
+    async getProjectWithTask(
+        @Arg('id') id: string,
+        @Ctx() ctx: Context
+    ){
+        try {
+            const project = await ctx.prisma.projects.findFirst({
+                where: { id },
                 include: {
                     tasks: true
                 }
