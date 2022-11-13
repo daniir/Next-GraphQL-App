@@ -1,3 +1,4 @@
+import { DocumentNode } from 'graphql';
 import React, { useState, useEffect } from 'react';
 import { useForm } from '../hooks/useForm';
 
@@ -6,13 +7,14 @@ type DataFormType = {
     id?: string,
     name: string,
     description?: string,
-  }
+  },
+  gqlMutation: DocumentNode
 };
 
-export default function ProjectForm({ formData }: DataFormType){
+export default function ProjectForm({ formData, gqlMutation }: DataFormType){
 
   const { form, errorMsg, loading, handlerChange, handlerSubmit } =
-    useForm(formData);
+    useForm(formData, gqlMutation);
 
   return loading ? (
     <div>
