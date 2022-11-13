@@ -1,22 +1,15 @@
-import { useEffect, useState } from 'react';
-import { useRouter } from 'next/router';
-import { useQuery } from '@apollo/client';
 import { GET_PROJECT } from '../../../src/graphql/data/query';
 import { ServerSideIndex } from '../../../src/graphql/data/types';
 import { client } from '../../../src/lib/apollo';
 import ProjectForm from '../../../components/ProjectForm';
+import { UPDATE_PROJECT } from '../../../src/graphql/data/mutation';
 
 export default function Edit({ project, loading }: ServerSideIndex){
 
-    // const router = useRouter();
-    // const { id } = router.query;
-
     if (loading) return <p>...loading...</p>
 
-    console.log('data: ', project);
-
     return(
-        <ProjectForm formData={project}/>
+        <ProjectForm formData={project} gqlMutation={UPDATE_PROJECT}/>
     )
 };
 

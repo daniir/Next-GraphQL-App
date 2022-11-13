@@ -1,4 +1,5 @@
 import ProjectForm from "../../components/ProjectForm";
+import { CREATE_PROJECT } from "../../src/graphql/data/mutation";
 
 
 const createDataForm = {
@@ -8,6 +9,6 @@ const createDataForm = {
 
 export default function Create(){
     return (
-      <ProjectForm formData={createDataForm}/>
+      <ProjectForm formData={createDataForm} gqlMutation={CREATE_PROJECT}/>
     );
 };
