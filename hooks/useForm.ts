@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useMutation } from '@apollo/client';
+import { DocumentNode, useMutation } from '@apollo/client';
 import { CREATE_PROJECT, UPDATE_PROJECT } from '../src/graphql/data/mutation';
 import { GET_PROJECTS } from '../src/graphql/data/query';
 import { ProjectObject } from '../src/graphql/data/types';
@@ -11,15 +11,15 @@ type initialData = {
 };
 
 export const useForm = (
-    initialForm: initialData
+    initialForm: initialData,
+    gqlMutation: DocumentNode
 ) => {
     const [form, setForm] = useState<initialData>(initialForm);
     const [errorMsg, setErrorMsg] = useState<String>("");
-    const [createProject, { loading }] = useMutation(CREATE_PROJECT);
-    const [updateProject] = useMutation(UPDATE_PROJECT);
+    const [handlerProject, { loading }] = useMutation(gqlMutation);
 
     const handlerCreateProject = async (form: initialData) => {
-        await createProject({
+        await handlerProject({
             variables: {
                 payload: form
             },
@@ -43,10 +43,23 @@ export const useForm = (
             name,
             description
         };
-        await updateProject({
+        await handlerProject({
             variables: {
                 id,
                 payload,
+            },
+            update(cache){
+                const { getProjects }: any = cache.readQuery({
+                    query: GET_PROJECTS,
+                });
+                cache.writeQuery({
+                    query: GET_PROJECTS,
+                    data: {
+                        getProjects: getProjects.map(
+                            (p: ProjectObject) => p.id === form.id ? form : p
+                        )
+                    }
+                });
             },
         });
     };
