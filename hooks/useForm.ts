@@ -30,7 +30,7 @@ export const useForm = (
               cache.writeQuery({
                 query: GET_PROJECTS,
                 data: {
-                  getProjects: [data.createProject, ...getProjects],
+                  getProjects: [...getProjects, data.createProject],
                 },
               });
             },
