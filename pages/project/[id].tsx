@@ -1,27 +1,35 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
-import { useQuery } from '@apollo/client';
 import { GET_PROJECT_WITH_TASKS } from '../../src/graphql/data/query';
+import { PorjectWithTasks } from '../../src/graphql/data/types';
+import Details from '../../components/Detail';
+import { client } from '../../src/lib/apollo';
 
 export default function Edit(){
 
     const router = useRouter();
     const { id } = router.query;
+    const [project, setProject] = useState<PorjectWithTasks>();
+    const [loading, setLoading] = useState(false);
+    
+    useEffect(() => {
+        const res = async()=> {
+            const { data, loading } = await client.query({
+                query: GET_PROJECT_WITH_TASKS,
+                variables: { id },
+            });
+            setProject(data.getProject);
+            setLoading(loading);
+        };
 
-    const { data, loading } = useQuery(GET_PROJECT_WITH_TASKS, {
-        variables: { id } 
-    });
+        res();
+    }, [id]);
 
     if (loading) return <p>...loading...</p>
 
-    console.log('data: ', data.getProject);
-    const { name, description } = data.getProject;
-
     return(
-        <div>
-            <p>Edit project id: {id}</p>
-            <p>Edit project name: {name}</p>
-            <p>Edit project description: {description}</p>
-        </div>
+        project 
+        ? <Details project={project}/>
+        : null
     )
 };
