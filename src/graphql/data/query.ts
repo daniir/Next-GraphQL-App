@@ -24,7 +24,7 @@ export const GET_PROJECT = gql`
 
 export const GET_PROJECT_WITH_TASKS = gql`
     query ($id: String!){
-        getProject(id: $id){
+        getProjectWithTask(id: $id){
             id
             name
             description
