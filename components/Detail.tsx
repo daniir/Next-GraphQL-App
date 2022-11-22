@@ -5,7 +5,7 @@ import TaskList from "./TaskList";
 
 export default function Details({ project }: ProjectWithTasksProp){
     
-    const { name, description } = project;
+    const { id, name, description } = project;
     const [add, setAdd] = useState<Boolean>(false);
     
     return (
@@ -20,7 +20,7 @@ export default function Details({ project }: ProjectWithTasksProp){
             {
               !add 
               ? (<TaskList project={project}/>)
-              : (<TaskForm/>)
+              : (<TaskForm projectId={id} setAdd={setAdd}/>)
             }
             <br />
             <button
@@ -30,7 +30,7 @@ export default function Details({ project }: ProjectWithTasksProp){
               { 
                 !add 
                 ? "Add new task "
-                : "Regresar "
+                : "Cancel "
               }
               <i className={!add ? "bi bi-plus-circle" : "bi bi-x-circle"}></i>
             </button>
