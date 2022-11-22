@@ -18,7 +18,7 @@ export default function Edit(){
                 query: GET_PROJECT_WITH_TASKS,
                 variables: { id },
             });
-            setProject(data.getProject);
+            setProject(data.getProjectWithTask);
             setLoading(loading);
         };
 
