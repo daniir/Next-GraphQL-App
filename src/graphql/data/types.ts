@@ -18,6 +18,11 @@ export type ServerSideIndex = {
   loading: boolean
 };
 
+export type ServerSideProject = {
+  project: PorjectWithTasks,
+  loading: boolean
+};
+
 export type PorjectWithTasks = {
   id: string;
   name: string;

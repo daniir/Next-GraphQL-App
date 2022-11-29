@@ -12,16 +12,6 @@ export const GET_PROJECTS = gql`
     }
 `;
 
-export const GET_PROJECT = gql`
-    query ($id: String!){
-        getProject(id: $id){
-            id
-            name
-            description
-        }
-    }
-`;
-
 export const GET_PROJECT_WITH_TASKS = gql`
     query ($id: String!){
         getProjectWithTask(id: $id){
