@@ -26,18 +26,18 @@ export default function TaskForm({ projectId, setAdd }: TaskFormProps){
           name
         },
         update(cache, { data }){
-          const { getProjectWithTask }: any = cache.readQuery({
+          const res: any = cache.readQuery({
             query: GET_PROJECT_WITH_TASKS,
             variables: { id: projectId },
           });
           console.log('Data: ', data);
-          console.log('getProject: ', getProjectWithTask);
-          cache.writeQuery({
-            query: GET_PROJECT_WITH_TASKS,
-            data: {
-              getProjectWithTask: [getProjectWithTask.tasks.push(data.createTask)] 
-            },
-          });
+          console.log('getProjectWithTask: ', res);
+          // cache.writeQuery({
+          //   query: GET_PROJECT_WITH_TASKS,
+          //   data: {
+          //     getProjectWithTask: getProjectWithTask.tasks.push(data.createTask),
+          //   },
+          // });
         },
       });
       resetStates();
@@ -78,7 +78,7 @@ export default function TaskForm({ projectId, setAdd }: TaskFormProps){
           { msgError ? (<p className="text-danger">{msgError}</p>) : null }
         </div>
         <div className="col-auto">
-          <button type="submit" className="btn btn-primary mb-3">
+          <button type="submit" disabled={loading} className="btn btn-primary mb-3">
             Add
           </button>
         </div>
