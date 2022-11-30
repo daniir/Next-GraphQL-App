@@ -57,6 +57,7 @@ export type ProjectProp = {
 };
 
 export type TaskProp = {
+  projectId: string,
   tasks: {
     id: string;
     name: string;

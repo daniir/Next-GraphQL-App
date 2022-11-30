@@ -34,3 +34,19 @@ export const CREATE_TASK = gql`
         }
     }
 `;
+
+export const UPDATE_TASK_STATUS = gql`
+    mutation ($id: String!, $status: Boolean!){
+        updateTaskStatus(id: $id, status: $status){
+            id
+            name
+            status
+        }
+    }
+`;
+
+export const DELETE_TASK = gql`
+    mutation ($id: String!){
+        deleteTask(id: $id)
+    }
+`;
