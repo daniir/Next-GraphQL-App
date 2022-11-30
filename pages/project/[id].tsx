@@ -1,27 +1,38 @@
+import { useState, useEffect } from 'react';
+import { useRouter } from 'next/router';
 import { GET_PROJECT_WITH_TASKS } from '../../src/graphql/data/query';
-import { ServerSideProject } from '../../src/graphql/data/types';
+import { useLazyQuery } from '@apollo/client';
 import Details from '../../components/Detail';
-import { client } from '../../src/lib/apollo';
+import NotFound from '../../components/NotFound';
+import Loader from '../../components/Loader';
 
-export default function Edit({ project, loading }: ServerSideProject){
 
-    if (loading) return <p>...loading...</p>
+
+export default function ProjectDetail(){
+
+    const router = useRouter();
+    const { id } = router.query;
+    const [project, setProject] = useState();  
+    const [getProjectWithTask, { loading, data }] = useLazyQuery(
+        GET_PROJECT_WITH_TASKS,
+        {
+            variables: { id }
+        }
+    );
+
+    useEffect(() => {
+        if(data) {
+            setProject(data.getProjectWithTask)
+        } else {
+            getProjectWithTask();
+        }
+    }, [data, getProjectWithTask])
+
+    if (loading) return <Loader/>
 
     return(
-        <Details project={project}/>
+        project
+        ? <Details project={project}/>
+        : <NotFound/>
     )
-};
-
-export async function getServerSideProps({ query: { id } }) {
-    const { data, loading } = await client.query({
-        query: GET_PROJECT_WITH_TASKS,
-        variables: { id }
-    });
-
-    return {
-        props: {
-            project: data.getProjectWithTask,
-            loading
-        }
-    }
 };

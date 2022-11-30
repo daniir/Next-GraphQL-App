@@ -1,5 +1,6 @@
 import { useQuery } from '@apollo/client';
 import GoTo from '../components/GoTo';
+import Loader from '../components/Loader';
 import Project from '../components/Project';
 import { GET_PROJECTS } from '../src/graphql/data/query';
 import { ProjectList, ProjectObject } from '../src/graphql/data/types';
@@ -8,7 +9,7 @@ export default function Index() {
 
   const { data, loading } = useQuery(GET_PROJECTS)
 
-  if(loading) return <p>..loading...</p>
+  if(loading) return <Loader/>
 
   const projects: ProjectList = data.getProjects;
 

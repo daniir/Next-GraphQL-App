@@ -3,10 +3,11 @@ import { ServerSideIndex } from '../../../src/graphql/data/types';
 import { client } from '../../../src/lib/apollo';
 import ProjectForm from '../../../components/ProjectForm';
 import { UPDATE_PROJECT } from '../../../src/graphql/data/mutation';
+import Loader from '../../../components/Loader';
 
 export default function Edit({ project, loading }: ServerSideIndex){
 
-    if (loading) return <p>...loading...</p>
+    if (loading) return <Loader/>
 
     return(
         <ProjectForm formData={project} gqlMutation={UPDATE_PROJECT}/>
