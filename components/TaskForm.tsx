@@ -26,18 +26,19 @@ export default function TaskForm({ projectId, setAdd }: TaskFormProps){
           name
         },
         update(cache, { data }){
-          const res: any = cache.readQuery({
+          const { getProjectWithTask }: any = cache.readQuery({
             query: GET_PROJECT_WITH_TASKS,
             variables: { id: projectId },
           });
-          console.log('Data: ', data);
-          console.log('getProjectWithTask: ', res);
-          // cache.writeQuery({
-          //   query: GET_PROJECT_WITH_TASKS,
-          //   data: {
-          //     getProjectWithTask: getProjectWithTask.tasks.push(data.createTask),
-          //   },
-          // });
+          cache.writeQuery({
+            query: GET_PROJECT_WITH_TASKS,
+            data: {
+              getProjectWithTask: {
+                ...getProjectWithTask,
+                tasks: [ ...getProjectWithTask.tasks, data.createTask]
+              },
+            },
+          });
         },
       });
       resetStates();

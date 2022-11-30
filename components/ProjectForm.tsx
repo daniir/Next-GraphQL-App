@@ -1,6 +1,8 @@
 import { DocumentNode } from 'graphql';
+import Link from 'next/link';
 import React, { useState, useEffect } from 'react';
 import { useForm } from '../hooks/useForm';
+import Loader from './Loader';
 
 type DataFormType = {
   formData: {
@@ -18,17 +20,22 @@ export default function ProjectForm({ formData, gqlMutation }: DataFormType){
 
   return loading ? (
     <div>
-      <p>...Loading project data...</p>
+      <Loader />
     </div>
   ) : (
     <form onSubmit={handlerSubmit}>
-      <div className="row justify-content-center">
-        <div className="mb-3">
-          <label htmlFor="formName" className="form-label">
-            Name
-          </label>
+      <div className="text-center mt-5">
+        <h1>Create a new project</h1>
+        <Link href="/">
+          <a style={{ textDecoration: "none" }}>
+            <i className="mx-2 bi bi-arrow-left-circle"></i>
+            Back
+          </a>
+        </Link>
+        <hr />
+        <div className="form-floating mb-3">
           <input
-            className="form-control w-25"
+            className="form-control"
             type="text"
             name="name"
             placeholder="Add a project name"
@@ -36,26 +43,24 @@ export default function ProjectForm({ formData, gqlMutation }: DataFormType){
             value={form.name}
             onChange={handlerChange}
           />
+          <label htmlFor="formName">Name</label>
           {errorMsg && <p className="text-danger">{errorMsg}</p>}
         </div>
-        <div className="col align-self-center">
-          <div className="mb-3">
-            <label htmlFor="formDescription" className="form-label">
-              Description
-            </label>
-            <textarea
-              className="form-control w-50"
-              name="description"
-              id="formDescription"
-              rows={3}
-              value={form.description}
-              onChange={handlerChange}
-            ></textarea>
-          </div>
+        <div className="form-floating">
+          <textarea
+            className="form-control"
+            style={{ height: "100px", resize: 'none' }}
+            name="description"
+            id="formDescription"
+            rows={3}
+            value={form.description}
+            onChange={handlerChange}
+          ></textarea>
+          <label htmlFor="formDescription">Description</label>
         </div>
-        <div>
+        <div className='d-grid gap-2 my-3'>
           <button type="submit" className="btn btn-primary">
-            { form.id ? "Update" : "Create" }
+            {form.id ? "Update" : "Create"}
           </button>
         </div>
       </div>

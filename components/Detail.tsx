@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import { useState } from 'react';
 import { ProjectWithTasksProp } from "../src/graphql/data/types";
 import TaskForm from './TaskForm';
@@ -14,6 +15,12 @@ export default function Details({ project }: ProjectWithTasksProp){
           <h2>{name}</h2>
           <p className="text-muted">{description}</p>
         </div>
+        <Link href="/">
+          <a style={{ textDecoration: "none" }}>
+            <i className="mx-2 bi bi-arrow-left-circle"></i>
+            Back
+          </a>
+        </Link>
         <hr />
         <div className="row">
         <div className="col">
