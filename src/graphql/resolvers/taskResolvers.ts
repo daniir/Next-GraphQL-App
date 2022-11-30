@@ -59,7 +59,7 @@ export class TaskResolver
         };
     };
 
-    @Mutation(() => Boolean)
+    @Mutation(() => Task)
     async updateTaskStatus(
         @Arg('id') id: string,
         @Arg('status') status: boolean,
@@ -72,7 +72,7 @@ export class TaskResolver
                     where: { id },
                     data: { status },
                 });
-                return statusTask.status;
+                return statusTask;
             };
         } catch (error) {
             console.error(`Mutation taskstatus deleted Error: ${error}`);
